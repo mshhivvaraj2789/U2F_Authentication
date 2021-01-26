@@ -1,0 +1,24 @@
+[Defines]
+	INF_VERSION		= 0x00010005
+	BASE_NAME		= U2FA
+	FILE_GUID		= 4e1dab67-3b44-4821-8f57-399fe5fde603
+	MODULE_TYPE		= UEFI_APPLICATION
+	VERSION_STRING	= 1.0
+	ENTRY_POINT		= U2FAMain
+
+[Sources]
+	U2FAMain.h
+	U2FAMain.c
+
+[Packages]
+	MdePkg/MdePkg.dec
+	MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+	UefiApplicationEntryPoint
+	UefiLib
+	UefiBootServicesTableLib	
+
+[Protocols]
+
+[Guids]

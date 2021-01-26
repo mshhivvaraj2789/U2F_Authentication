@@ -1,4 +1,4 @@
-# U2F_Authentication
+# U2F_Authentication (v1.0)
 
 # Scope:
 1) To enable the security on UEFI Level and OS Level by writing U2F Authentication Application.
