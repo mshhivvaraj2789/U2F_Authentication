@@ -11,4 +11,11 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Protocol/Shell.h>
 
+#include "UsbFSCheck.h"
+
+UINTN
+U2FASetCurDir(
+	IN EFI_SHELL_PROTOCOL *EfiShellProtocol
+);
+
 #endif

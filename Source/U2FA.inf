@@ -9,6 +9,8 @@
 [Sources]
 	U2FAMain.h
 	U2FAMain.c
+	UsbFSCheck.h
+	UsbFSCheck.c
 
 [Packages]
 	MdePkg/MdePkg.dec
@@ -17,8 +19,9 @@
 [LibraryClasses]
 	UefiApplicationEntryPoint
 	UefiLib
-	UefiBootServicesTableLib	
+	UefiBootServicesTableLib
 
 [Protocols]
+	gEfiShellProtocolGuid
 
 [Guids]
