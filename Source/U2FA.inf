@@ -7,21 +7,20 @@
 	ENTRY_POINT		= U2FAMain
 
 [Sources]
-	U2FAMain.h
 	U2FAMain.c
-	UsbFSCheck.h
-	UsbFSCheck.c
+	U2FAMain.h
 
 [Packages]
 	MdePkg/MdePkg.dec
-	MdeModulePkg/MdeModulePkg.dec
 
 [LibraryClasses]
 	UefiApplicationEntryPoint
 	UefiLib
 	UefiBootServicesTableLib
+	MemoryAllocationLib
+	DebugLib
+	DevicePathLib
 
 [Protocols]
-	gEfiShellProtocolGuid
 
 [Guids]
