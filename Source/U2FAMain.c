@@ -15,9 +15,11 @@ EFIAPI PerFileFunc(
 	IN EFI_DEVICE_PATH *Dp
 )
 {
-	EFI_STATUS Status;
-	EFI_FILE_HANDLE File;
-
+	EFI_STATUS			Status;
+	EFI_FILE_HANDLE		File;
+	UINTN				Size = 2;
+	VOID				*Buffer = 0;
+	
 	Print(L"Path = %s FileName = %s\n", ConvertDevicePathToText(DirDp, TRUE,
 		TRUE), FileInfo->FileName);
 
@@ -29,6 +31,12 @@ EFIAPI PerFileFunc(
 
 	// reset position just in case
 	File->SetPosition(File, 0);
+
+	UINT8 i;
+	for (i = 0; i < 9; i++) {
+		File->Read(File, &Size, Buffer);
+		Print(L"%c", Buffer);
+	}
 
 	// ****Do stuff on the file here****
 
@@ -78,35 +86,39 @@ ProcessFilesInDir(
 			FreePool(FileInfo);
 			return Status;
 		}
+		else {
+			FileName = FileInfo->FileName;
 
-		FileName = FileInfo->FileName;
+			//
+			// skip files named . or ..
+			//
+			if (StrCmp(FileName, L".") == 0 || StrCmp(FileName, L"..") == 0) {
+				continue;
+			}
+			//
+			// Searching for u2fa.key file in USB Mass Storage
+			//
+			else if (StrCmp(FileName, L"u2fa.key") != 0) {
+				continue;
+			}
+			else if (StrCmp(FileName, L"u2fa.key") == 0) {
+				Print(L"Detected file u2fa.key\n");
+			}
 
-		//
-		// skip files named . or ..
-		//
-		if (StrCmp(FileName, L".") == 0 || StrCmp(FileName, L"..") == 0) {
-			continue;
+			//
+			// So we have absolute device path to child file/dir.
+			//
+			Dp = FileDevicePath(DirDp, FileName);
+			if (Dp == NULL) {
+				FreePool(FileInfo);
+				return EFI_OUT_OF_RESOURCES;
+			}
+
+			//
+			// Do whatever processing on the file.
+			//
+			PerFileFunc(Dir, DirDp, FileInfo, Dp);
 		}
-		//
-		// Searching for u2fa.key file in USB Mass Storage
-		//
-		else if (StrCmp(FileName, L"u2fa.key") == 0) {
-			Print(L"Detected file u2fa.key\n");
-		}
-
-		//
-		// So we have absolute device path to child file/dir.
-		//
-		Dp = FileDevicePath(DirDp, FileName);
-		if (Dp == NULL) {
-			FreePool(FileInfo);
-			return EFI_OUT_OF_RESOURCES;
-		}
-
-		//
-		// Do whatever processing on the file.
-		//
-		PerFileFunc(Dir, DirDp, FileInfo, Dp);
 
 		if (FileInfo->Attribute & EFI_FILE_DIRECTORY) {
 			//
