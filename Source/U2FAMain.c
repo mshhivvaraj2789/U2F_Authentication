@@ -17,10 +17,10 @@ EFIAPI PerFileFunc(
 {
 	EFI_STATUS			Status;
 	EFI_FILE_HANDLE		File;
-	UINTN				Size = 2;
-	VOID				*Buffer = 0;
+	UINTN				Size = 1;
+	CHAR16				Buffer;
 	
-	Print(L"Path = %s FileName = %s\n", ConvertDevicePathToText(DirDp, TRUE,
+	Print(L"Path = %s\nFileName = %s\n", ConvertDevicePathToText(DirDp, TRUE,
 		TRUE), FileInfo->FileName);
 
 	// read the file into a buffer
@@ -30,15 +30,14 @@ EFIAPI PerFileFunc(
 	}
 
 	// reset position just in case
-	File->SetPosition(File, 0);
+	
 
-	UINT8 i;
-	for (i = 0; i < 9; i++) {
-		File->Read(File, &Size, Buffer);
+	for (UINTN i = 0; i < 9; i++) {
+		File->SetPosition(File, i);
+		File->Read(File, &Size, &Buffer);
 		Print(L"%c", Buffer);
 	}
-
-	// ****Do stuff on the file here****
+	Print(L"\n");
 
 	Dir->Close(File);
 
