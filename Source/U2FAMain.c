@@ -29,10 +29,7 @@ EFIAPI PerFileFunc(
 		return Status;
 	}
 
-	// reset position just in case
-	
-
-	for (UINTN i = 0; i < 9; i++) {
+	for (UINTN i = 0; i < FileInfo->FileSize; i++) {
 		File->SetPosition(File, i);
 		File->Read(File, &Size, &Buffer);
 		Print(L"%c", Buffer);
